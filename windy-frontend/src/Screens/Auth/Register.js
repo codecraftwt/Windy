@@ -31,7 +31,7 @@ export default function Register({navigation}) {
   };
 
   const validateAadhar = text => {
-    const numericText = text.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+    const numericText = text.replace(/[^0-9]/g, '');
     if (numericText.length <= 12) {
       setAadharNumber(numericText);
       setAadharError(
@@ -41,7 +41,7 @@ export default function Register({navigation}) {
   };
 
   const validateMobile = text => {
-    const numericText = text.replace(/[^0-9]/g, ''); // Remove non-numeric characters
+    const numericText = text.replace(/[^0-9]/g, '');
     if (numericText.length <= 10) {
       setMobileNumber(numericText);
       setMobileError(

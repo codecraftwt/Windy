@@ -6,7 +6,6 @@ import Register from '../Screens/Auth/Register';
 import ForgotPassword from '../Screens/Auth/ForgotPassword';
 import OTP from '../Screens/Auth/OTP';
 import CreatePass from '../Screens/Auth/CreatePass';
-import BottomNavigation from './BottomNavigation';
 import Home from '../Screens/Dashboard/Home';
 
 const Navigation = () => {
@@ -19,7 +18,7 @@ const Navigation = () => {
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
       <Stack.Screen name="OTP" component={OTP} />
       <Stack.Screen name="CreatePass" component={CreatePass} />
-      <Stack.Screen name="Home" component={Home}/>
+      <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
 };

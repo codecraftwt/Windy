@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StatusBar,
   StyleSheet,
@@ -9,24 +9,34 @@ import {
   FlatList,
 } from 'react-native';
 import axios from 'axios';
-import { baseURL } from '../../Utils/API';
+import {baseURL} from '../../Utils/API';
 
 export default function Home() {
   const [message, setMessage] = useState('');
-  const [messages, setMessages] = useState([]); 
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const initialMessage = {
       role: 'assistant',
       content:
-        "Let’s start by identifying what’s worrying you. Can you describe the situation in detail?",
+        'Hello, Windy is here. How can I help you?',
     };
 
+    const secondMessage = {
+      role: 'assistant',
+      content:
+        'Let’s start by identifying what’s worrying you. Can you describe the situation in detail?',
+    };
+
+    // Set the first message immediately
+    setMessages([initialMessage]);
+
+    // Set the second message after a delay
     const timer = setTimeout(() => {
-      setMessages([initialMessage]);
-    }, 1000);
-  
+      setMessages((prevMessages) => [...prevMessages, secondMessage]);
+    }, 1500);
+
     return () => clearTimeout(timer);
   }, []);
 
@@ -42,20 +52,15 @@ export default function Home() {
       setLoading(true);
 
       // Add temporary "loading" message
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: '...' },
-      ]);
+      setMessages((prev) => [...prev, { role: 'assistant', content: '...' }]);
 
       try {
-        // Send conversation to the backend
         const response = await axios.post(`${baseURL}api/chat`, {
           messages: [...messages, userMessage], // Include the full history
         });
 
-        // Replace "loading" message with assistant's reply
-        setMessages((prev) => {
-          const updatedMessages = [...prev];
+        setMessages((prevMessages) => {
+          const updatedMessages = [...prevMessages];
           updatedMessages[updatedMessages.length - 1] = {
             role: 'assistant',
             content: response.data.reply,
@@ -64,14 +69,23 @@ export default function Home() {
         });
       } catch (error) {
         console.error('Error fetching response:', error);
-        alert('Failed to fetch response from server.', error);
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: 'Sorry, I am not able to respond now..',
+          },
+        ]);
         // Remove the "loading" message if there's an error
         setMessages((prev) => prev.slice(0, -1));
       } finally {
         setLoading(false);
       }
     } else {
-      alert('Please enter a message.');
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: 'Please give me a message..' },
+      ]);
     }
   };
 
@@ -89,13 +103,12 @@ export default function Home() {
         data={messages}
         keyExtractor={(item, index) => index.toString()}
         style={styles.messagesContainer}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View
             style={[
               styles.messageBubble,
               item.role === 'user' ? styles.userBubble : styles.assistantBubble,
-            ]}
-          >
+            ]}>
             <Text style={styles.messageText}>{item.content}</Text>
           </View>
         )}
@@ -113,8 +126,7 @@ export default function Home() {
         <TouchableOpacity
           style={[styles.sendButton, loading && styles.sendButtonDisabled]}
           onPress={handleSend}
-          disabled={loading}
-        >
+          disabled={loading}>
           <Text style={styles.sendButtonText}>Send</Text>
         </TouchableOpacity>
       </View>

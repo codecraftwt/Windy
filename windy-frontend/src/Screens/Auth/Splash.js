@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet, StatusBar } from 'react-native';
-import { logo } from '../../Assets';
+import React, {useEffect} from 'react';
+import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
+import {logo} from '../../Assets';
 
-export default function SplashScreen({ navigation }) {
+export default function SplashScreen({navigation}) {
   useEffect(() => {
     setTimeout(() => {
       navigation.replace('Login');
@@ -14,7 +14,6 @@ export default function SplashScreen({ navigation }) {
       <StatusBar barStyle="light-content" backgroundColor="#A6E3E9" />
       <Image resizeMode="contain" style={styles.logo} source={logo} />
       <Text style={styles.welcomeText}>Worry Me Not</Text>
-      <Text style={styles.tagline}>Manage Your Loans Effortlessly</Text>
     </View>
   );
 }

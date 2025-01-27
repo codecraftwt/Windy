@@ -14,9 +14,7 @@ app.use(express.json());
 
 // Routes
 app.post("/api/chat", async (req, res) => {
-  const { messages } = req.body;
-
-  console.log("API called with messages", messages);
+  const { messages } = req.body;  
 
   if (!messages || !Array.isArray(messages)) {
     return res.status(400).json({ error: "Messages should be an array." });
